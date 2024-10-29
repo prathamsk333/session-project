@@ -23,21 +23,16 @@ export default function App() {
 
   function handleClick(index) {
     const newBoard = [...board];
-    if (newBoard[index] !== null) return;
+    if (newBoard[index] !== null || winner) return; // Prevent further clicks if there's a winner
     newBoard[index] = currentPlayer;
     setWinner(checkWinner(newBoard));
-    setCurrentPlayer((player) => {
-      if (player === "X") return "O";
-      else return "X";
-    });
-
+    setCurrentPlayer((player) => (player === "X" ? "O" : "X"));
     setBoard(newBoard);
   }
 
   function onRestart() {
     setBoard(initialBoard);
     setWinner(null);
-    setDraw(false);
   }
 
   return (
@@ -49,12 +44,12 @@ export default function App() {
             <Player
               initialName="player 1"
               symbol="X"
-              isActive={currentPlayer === "X" ? true : false}
+              isActive={currentPlayer === "X"}
             />
             <Player
               initialName="player 2"
               symbol="O"
-              isActive={currentPlayer === "O" ? true : false}
+              isActive={currentPlayer === "O"}
             />
           </ol>
           {winner && <GameOver winner={winner} onRestart={onRestart} />}
